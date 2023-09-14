@@ -2,7 +2,15 @@ import sys
 
 # Initialize the Sudoku grid as a 2D list (9x9)
 sudoku_grid = [[' ' for _ in range(9)] for _ in range(9)]
-print(sudoku_grid)
+
+def Update_grid(position, cur_grid):
+    column = ord(position[0])-65
+    row = ord(position[1])-97
+    number = position[2]
+    cur_grid[column][row] = number
+    return cur_grid
+    
+print(Update_grid('Ab3', sudoku_grid))
 
 # Function to display the Sudoku grid
 def display_grid(grid):

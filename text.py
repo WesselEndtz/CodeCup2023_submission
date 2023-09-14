@@ -21,3 +21,9 @@ for column in sudoku_grid[row_min:row_min+3]:
     box.append(column[colum_min:colum_min+3])
 
 print(box)
+
+row_num = 3
+column_num = 3
+
+box_num = int(row_num/3)*3+int(column_num/3)
+print(box_num)

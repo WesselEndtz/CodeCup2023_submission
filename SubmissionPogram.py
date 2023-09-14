@@ -1,4 +1,6 @@
 import sys
+import random
+
 
 class SudokuGame:
     def __init__(self):
@@ -16,6 +18,30 @@ class SudokuGame:
         number = position[2]
         self.grid[column][row] = number
     
+    def get_box_number(self, num):
+        colum_min = int(num/3)*3
+        row_min = num-3*int(num/3)
+        box = []
+        for column in sudoku_grid[colum_min:colum_min+3]:
+            box.append(column[row_min:row_min+3])
+        return box
+
+    
+    def Simple_Move(self):
+        random_number = random.randint(1, 9)
+        column_num = 0
+        for column in self.grid:
+            if random_number not in column:
+                column = column_num
+                row_num = 0
+                for row in list(map(list, zip(*self.grid))):
+                    if random_number not in row:
+                        row = row_num
+                        box = 
+                        print(box)
+                row_num += 1
+        column_num += 1
+        
     def update_grid_potential(self, position):
         print('h')
 

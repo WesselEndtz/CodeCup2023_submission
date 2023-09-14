@@ -1,36 +1,30 @@
 import sys
 
-# Initialize the Sudoku grid as a 2D list (9x9)
-sudoku_grid = [[' ' for _ in range(9)] for _ in range(9)]
-
-def Update_grid(position, cur_grid):
-    column = ord(position[0])-65
-    row = ord(position[1])-97
-    number = position[2]
-    cur_grid[column][row] = number
-    return cur_grid
+class SudokuGame:
+    def __init__(self):
+        # Initialize the Sudoku grid as a 2D list (9x9)
+        self.grid = [['.' for _ in range(9)] for _ in range(9)]
+        self.gridpotential = [['.' for _ in range(9)] for _ in range(9)]
+        self.round = 0
     
-print(Update_grid('Ab3', sudoku_grid))
+    def roundup(self):
+        self.round += 1
+    
+    def update_grid(self, position):
+        column = ord(position[0]) - 65
+        row = ord(position[1]) - 97
+        number = position[2]
+        self.grid[column][row] = number
+    
+    def update_grid_potential(self, position):
+        print('h')
 
-# Function to display the Sudoku grid
-def display_grid(grid):
-    for row in grid:
-        print(' '.join(row))
+    def display_grid(self):
+        for row in self.grid:
+            print(' '.join(row))
 
-# Function to check if a move is valid
-def is_valid_move(grid, move):
-    # Implement the logic to check if the move is valid
-    pass
-
-# Function to update the Sudoku grid with a move
-def update_grid(grid, move):
-    # Implement the logic to update the grid with the move
-    pass
-
-# Function to check if the Sudoku has a unique solution
-def has_unique_solution(grid):
-    # Implement the logic to check if the Sudoku has a unique solution
-    pass
+# Create an instance of the SudokuGame class
+game = SudokuGame()
 
 # Main game loop
 while True:
@@ -44,7 +38,7 @@ while True:
         sys.stdout.flush()
     elif command.startswith("Quit"):
         break
-    elif command.startswith("Ab3"):  # Replace with proper move parsing
+    elif command.startswith(""):  # Replace with proper move parsing
         # It's your turn as the Second player
         # Implement the logic to make a move as the Second player
         move = "Gh6"  # Replace with your move logic
@@ -52,9 +46,13 @@ while True:
         sys.stdout.flush()
     
     # Implement the logic to update the grid based on opponent's move
-    update_grid(sudoku_grid, command)
+    game.update_grid(move)
+
+    #Note the round we are in
+    game.roundup()
+    print(game.round)
     
     # Display the current state of the Sudoku grid
-    display_grid(sudoku_grid)
+    game.display_grid()
 
 # End of the game

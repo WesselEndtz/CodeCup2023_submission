@@ -276,119 +276,65 @@ Difficulty: {}
 {}
         '''.format(self.size, self.size, self.width, self.height, difficulty_str, self.__format_board_ascii())
 
+board = [
+    [0,0,7,0,4,0,0,0,0],
+    [0,0,0,0,0,8,0,0,6],
+    [0,4,1,0,0,0,9,0,0],
+    [0,0,0,0,0,0,1,7,0],
+    [0,0,0,0,0,6,0,0,0],
+    [0,0,8,7,0,0,2,0,0],
+    [3,0,0,0,0,0,0,0,0],
+    [0,0,0,1,2,0,0,0,0],
+    [8,6,0,0,7,0,0,0,5]
+]
 
-class SudokuGame:
-    def __init__(self):
-        # Initialize the Sudoku grid as a 2D list (9x9)
-        self.grid = [['.' for _ in range(9)] for _ in range(9)]
-        self.gridpotential = [['.' for _ in range(9)] for _ in range(9)]
-        self.round = 0
-    
-    def roundup(self):
-        self.round += 1
-    
-    def update_grid(self, position, raw=False):
-        print(position)
-        if raw == False:
-            column = ord(position[0]) - 65
-            row = ord(position[1]) - 97
-        else:
-            column = int(position[0])
-            row = int(position[1])
-        number = position[2]
-        self.grid[column][row] = number
-    
-    def get_box_of_number(self, num):
-        row_min = int(num/3)*3
-        colum_min = (num-3*int(num/3))*3
-        box = []
-        for column in self.grid[row_min:row_min+3]:
-            box.append(column[colum_min:colum_min+3])
-        return box
+board = [
+    [0,0,7,0,4,0,0,0,0],
+    [0,0,0,0,0,8,0,0,6],
+    [0,4,1,0,0,0,9,0,0],
+    [0,0,0,0,0,0,1,7,0],
+    [0,0,0,0,0,6,0,0,0],
+    [0,0,8,7,0,0,2,0,0],
+    [3,0,0,0,0,0,0,0,0],
+    [0,0,0,1,2,0,0,0,0],
+    [8,6,0,0,7,0,0,0,5]
+]
+puzzle = Sudoku(3, 3, board=board)
 
-    
-    def Simple_Move(self):
-        """
-        strategy is to generate a random number and find the first place that 
-        the random number checks all boxes (not in the row, column and box)
-        """
-        #random_number = random.randint(1, 9)
-        Imagined_grid = copy.deepcopy(self.grid)
-        Reverse_imagined_grid = list(map(list, zip(*Imagined_grid)))
-        # for each row in the grid
-        for random_number in range(1, 9):
-            row_num = 0
-            print('random_num = ', random_number)
-            for row in Imagined_grid:
-                # while to keep iterating until "." locations are exhauset
-                # check if the random number is in the row
-                if str(random_number) not in str(row):
-                    print('empty row num', row_num, 'row = ', row)
-                    Open_spaces_onRow = row.count(".")+1
-                    print(row)
-                    for x in range(1, Open_spaces_onRow):
-                        # maybe also make a new instance of a Imagined_grid every time for just to row
-                        # to avoid permanence
-                        print('cycle = ', x)
-                        try: 
-                            print(row)
-                            openlocation = row.index(".")
-                            print(row_num, openlocation)
-                            Imagined_grid[row_num][openlocation] = "-"
-                            print('new grid imagine = ', Imagined_grid, 'openlocation = ', openlocation)
-                        except ValueError:
-                            print('no open locations on row')
-                            continue  # Skip the current iteration of the loop
-                        # when finding the row we set that as the row to check
-                        if str(random_number) not in str(Reverse_imagined_grid[openlocation]):
-                            # find the box_number our curre5nt position is in 0-8
-                            box_num = int(row_num/3)*3+int(openlocation/3)
-                            # Get the box of the specific box number
-                            box = self.get_box_of_number(box_num)
-                            print("box_num =", box_num)
-                            if str(random_number) not in str(box):
-                                self.update_grid(str(row_num) + str(openlocation) + str(random_number), raw=True)
-                                print('found position', row_num, openlocation, random_number)
-                                return "Ff2"
-                row_num += 1
-        
-    def update_grid_potential(self, position):
-        print('h')
+print(puzzle)
+# ---------------------------
+# 9x9 (3x3) SUDOKU PUZZLE
+# Difficulty: 0.74
+# ---------------------------
+# +-------+-------+-------+
+# |     7 |   4   |       |
+# |       |     8 |     6 |
+# |   4 1 |       | 9     |
+# +-------+-------+-------+
+# |       |       | 1 7   |
+# |       |     6 |       |
+# |     8 | 7     | 2     |
+# +-------+-------+-------+
+# | 3     |       |       |
+# |       | 1 2   |       |
+# | 8 6   |   7 0 |     5 |
+# +-------+-------+-------+
 
-    def display_grid(self):
-        for row in self.grid:
-            print(' '.join(row))
-
-# Create an instance of the SudokuGame class
-game = SudokuGame()
-
-# Main game loop
-while True:
-    command = input().strip()
-    
-    if command == "Start":
-        # It's your turn as the First player
-        # Implement the logic to make a move as the First player
-        move = game.Simple_Move()  # Replace with your move logic
-        print(move)
-        sys.stdout.flush()
-    elif command.startswith("Quit"):
-        break
-    elif command.startswith(""):  # Replace with proper move parsing
-        # It's your turn as the Second player
-        # Implement the logic to make a move as the Second player
-        move = "Gh6"  # Replace with your move logic
-        print(move)
-        sys.stdout.flush()
-    
-    # Implement the logic to update the grid based on opponent's move
-    game.update_grid(move)
-
-    #Note the round we are in
-    game.roundup()
-    print(game.round)
-    
-    # Display the current state of the Sudoku grid
-    game.display_grid()
-
-# End of the game
+puzzle.solve().show_full()
+# ---------------------------
+# 9x9 (3x3) SUDOKU PUZZLE
+# Difficulty: SOLVED
+# ---------------------------
+# +-------+-------+-------+
+# | 9 8 7 | 6 4 2 | 5 3 1 |
+# | 2 3 5 | 9 1 8 | 7 4 6 |
+# | 6 4 1 | 5 3 7 | 9 8 2 |
+# +-------+-------+-------+
+# | 5 2 6 | 3 8 4 | 1 7 9 |
+# | 1 7 3 | 2 9 6 | 8 5 4 |
+# | 4 9 8 | 7 5 1 | 2 6 3 |
+# +-------+-------+-------+
+# | 3 1 9 | 8 6 5 | 4 2 7 |
+# | 7 5 4 | 1 2 3 | 6 9 8 |
+# | 8 6 2 | 4 7 9 | 3 1 5 |
+# +-------+-------+-------+

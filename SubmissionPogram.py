@@ -37,38 +37,45 @@ class SudokuGame:
         strategy is to generate a random number and find the first place that 
         the random number checks all boxes (not in the row, column and box)
         """
-        random_number = random.randint(1, 9)
-        row_num = 0
+        #random_number = random.randint(1, 9)
         Imagined_grid = copy.deepcopy(self.grid)
         Reverse_imagined_grid = list(map(list, zip(*Imagined_grid)))
-        print('random_num = ', random_number)
         # for each row in the grid
-        for row in Imagined_grid:
-            # while to keep iterating until "." locations are exhauset
-            # check if the random number is in the row
-            if str(random_number) not in str(row):
-                print('empty row num', row_num, 'row = ', row)
-                try: 
-                    openlocation = row.index(".")
-                    Imagined_grid[row_num][openlocation] = "-"
-                    print('new grid imagine = ', Imagined_grid, 'openlocation = ', openlocation)
-                except ValueError:
-                    print('no open locations on row')
-                    row_num += 1
-                    continue  # Skip the current iteration of the loop
-                # when finding the row we set that as the row to check
-                row = row_num
-                if str(random_number) not in str(Reverse_imagined_grid[openlocation]):
-                    # find the box_number our current position is in 0-8
-                    box_num = int(row_num/3)*3+int(openlocation/3)
-                    # Get the box of the specific box number
-                    box = self.get_box_of_number(box_num)
-                    print("box_num =", box_num)
-                    if str(random_number) not in str(box):
-                        self.update_grid(str(row_num) + str(openlocation) + str(random_number), raw=True)
-                        print('found position', row_num, openlocation, random_number)
-                        return "Ff2"
-            row_num += 1
+        for random_number in range(1, 9):
+            row_num = 0
+            print('random_num = ', random_number)
+            for row in Imagined_grid:
+                # while to keep iterating until "." locations are exhauset
+                # check if the random number is in the row
+                if str(random_number) not in str(row):
+                    print('empty row num', row_num, 'row = ', row)
+                    Open_spaces_onRow = row.count(".")+1
+                    print(row)
+                    for x in range(1, Open_spaces_onRow):
+                        # maybe also make a new instance of a Imagined_grid every time for just to row
+                        # to avoid permanence
+                        print('cycle = ', x)
+                        try: 
+                            print(row)
+                            openlocation = row.index(".")
+                            print(row_num, openlocation)
+                            Imagined_grid[row_num][openlocation] = "-"
+                            print('new grid imagine = ', Imagined_grid, 'openlocation = ', openlocation)
+                        except ValueError:
+                            print('no open locations on row')
+                            continue  # Skip the current iteration of the loop
+                        # when finding the row we set that as the row to check
+                        if str(random_number) not in str(Reverse_imagined_grid[openlocation]):
+                            # find the box_number our curre5nt position is in 0-8
+                            box_num = int(row_num/3)*3+int(openlocation/3)
+                            # Get the box of the specific box number
+                            box = self.get_box_of_number(box_num)
+                            print("box_num =", box_num)
+                            if str(random_number) not in str(box):
+                                self.update_grid(str(row_num) + str(openlocation) + str(random_number), raw=True)
+                                print('found position', row_num, openlocation, random_number)
+                                return "Ff2"
+                row_num += 1
         
     def update_grid_potential(self, position):
         print('h')
